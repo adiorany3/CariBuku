@@ -18,6 +18,7 @@ This app allows you to search and download ebooks on Internet Archive.
 - Use 'Load More' for additional results.
 
 **Disclaimer:** Ensure compliance with copyright laws.
+                If server bussy, try again later.
 """)
 
 st.sidebar.markdown("---")
