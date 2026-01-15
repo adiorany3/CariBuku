@@ -14,12 +14,12 @@ st.sidebar.title("📖 About this app")
 st.sidebar.info("""
 This app allows you to search and download ebooks on Internet Archive.
 
-- Enter a title or author to search.
-- Click on results to expand and download.
+- Enter a title or author to search. Robot will search for matching books.
+- Click on results to expand and download. Enjoy reading!
 - Use 'Load More' for additional results.
 
 **Disclaimer:** Ensure compliance with copyright laws.
-                If server bussy, try again later.
+                If robot bussy, try again later.
 """)
 
 st.sidebar.markdown("---")
@@ -122,7 +122,7 @@ p, div, span {
 """, unsafe_allow_html=True)
 
 # Search functionality
-query = st.text_input("Enter book title or author:")
+query = st.text_input("Enter book title or author here:")
 
 if 'results' not in st.session_state:
     st.session_state.results = []
