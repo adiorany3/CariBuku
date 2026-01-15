@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from libgen import search_books, get_download_url
+import datetime
 
 st.set_page_config(
     page_title="Hidden Book Downloader",
@@ -179,4 +180,5 @@ if st.session_state.results:
                 st.error("Download URL not available")
 
 st.markdown("---")
-st.markdown('<p style="text-align: center; color: #dda0dd;">Smart Robot - Developed by Galuh Adi Insani</p>', unsafe_allow_html=True)
+current_year = datetime.datetime.now().year
+st.markdown(f'<p style="text-align: center; color: #dda0dd;">Smart Robot - Developed by Galuh Adi Insani © {current_year}</p>', unsafe_allow_html=True)
