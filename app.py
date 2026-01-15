@@ -3,13 +3,13 @@ import pandas as pd
 from libgen import search_books, get_download_url
 
 st.set_page_config(
-    page_title="Hidden  Downloader",
+    page_title="Hidden Book Downloader",
     page_icon="📚",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-st.sidebar.title("📖 About")
+st.sidebar.title("📖 About this app")
 st.sidebar.info("""
 This app allows you to search and download ebooks on Internet Archive.
 
@@ -118,7 +118,7 @@ if 'current_query' not in st.session_state:
     st.session_state.current_query = ""
 
 def perform_search():
-    with st.spinner(f"Searching page {st.session_state.page}..."):
+    with st.spinner(f"Smart robot deep thinking, please wait, we will search at page {st.session_state.page}..."):
         new_results = search_books(st.session_state.current_query, max_results=20, page=st.session_state.page)
     if new_results:
         st.session_state.results.extend(new_results)
@@ -139,7 +139,7 @@ with col1:
             st.error("Please enter a search query.")
 
 with col2:
-    if st.button("Hapus History", key="clear_history_btn"):
+    if st.button("Clear History", key="clear_history_btn"):
         st.session_state.results = []
         st.session_state.page = 1
         st.session_state.current_query = ""
@@ -164,4 +164,4 @@ if st.session_state.results:
                 st.error("Download URL not available")
 
 st.markdown("---")
-st.markdown('<p style="text-align: center; color: #dda0dd;">Smart Robot - Decode by Galuh Adi Insani</p>', unsafe_allow_html=True)
+st.markdown('<p style="text-align: center; color: #dda0dd;">Smart Robot - Developed by Galuh Adi Insani</p>', unsafe_allow_html=True)
