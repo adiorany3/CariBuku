@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 # List of LibGen mirrors to try
 MIRRORS = [
     'https://libgen.li',
+    'https://libgen.vg',
+    'https://libgen.gl',
     'https://libgen.is',
     'https://libgen.rs'
 ]
