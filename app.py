@@ -156,16 +156,25 @@ p, div, span {
 # Search functionality
 query = st.text_input("Enter book title or author here:")
 
+# Constants for messages
+SEARCH_LOADING_MESSAGE = "🤖 Smart robot is deep searching, please wait... (Page {page})"
+RESULTS_SUCCESS_MESSAGE = "Loaded {count} more results (total: {total})"
+NO_RESULTS_MESSAGE = "No more results found."
+SEARCH_ERROR_MESSAGE = "An error occurred while searching. Please try again."
+
 def perform_search():
-    placeholder = st.empty()
-    placeholder.markdown(f'<div style="display: flex; justify-content: center; align-items: center; height: 100px;"><div class="robot-search">🤖 Smart robot deep thinking, please wait, we will search at page {st.session_state.page}...</div></div>', unsafe_allow_html=True)
-    new_results = search_books(st.session_state.current_query, max_results=20, page=st.session_state.page)
-    placeholder.empty()
-    if new_results:
-        st.session_state.results.extend(new_results)
-        st.success(f"Loaded {len(new_results)} more results (total: {len(st.session_state.results)})")
-    else:
-        st.error("No more results found.")
+    try:
+        with st.spinner(SEARCH_LOADING_MESSAGE.format(page=st.session_state.page)):
+            new_results = search_books(st.session_state.current_query, max_results=20, page=st.session_state.page)
+        if new_results:
+            st.session_state.results.extend(new_results)
+            st.success(RESULTS_SUCCESS_MESSAGE.format(count=len(new_results), total=len(st.session_state.results)))
+        else:
+            st.warning(NO_RESULTS_MESSAGE)
+    except Exception as e:
+        st.error(SEARCH_ERROR_MESSAGE)
+        # Optional: log the error for debugging
+        print(f"Search error: {e}")
 
 col1, col2, col3 = st.columns([1, 1, 1])
 
