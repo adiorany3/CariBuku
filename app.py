@@ -13,6 +13,8 @@ if 'current_query' not in st.session_state:
     st.session_state.current_query = ""
 if 'show_donate' not in st.session_state:
     st.session_state.show_donate = False
+if 'input_query' not in st.session_state:
+    st.session_state.input_query = ""
 
 st.set_page_config(
     page_title="Hidden Book Downloader",
@@ -156,7 +158,11 @@ p, div, span {
 st.markdown('<h1 style="text-align: center; color: #dda0dd;">🤖 Robot is ready to deep searching</h1>', unsafe_allow_html=True)
 
 # Search functionality
-query = st.text_input("Enter book title or author here:")
+query = st.text_input("Enter book title or author here:", value=st.session_state.input_query, key="query_input")
+
+# Update session state when user types
+if query != st.session_state.input_query:
+    st.session_state.input_query = query
 
 # Constants for messages
 SEARCH_LOADING_MESSAGE = "🤖 Smart robot is deep searching, please wait... (Page {page})"
@@ -186,6 +192,7 @@ with col1:
             st.session_state.results = []
             st.session_state.page = 1
             st.session_state.current_query = query
+            st.session_state.input_query = query  # Keep the input field value
             perform_search()
         else:
             st.error("Please enter a search query.")
@@ -195,6 +202,7 @@ with col2:
         st.session_state.results = []
         st.session_state.page = 1
         st.session_state.current_query = ""
+        st.session_state.input_query = ""
         st.success("History cleared. Display reset to initial state.")
 
 with col3:
