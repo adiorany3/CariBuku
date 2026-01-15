@@ -4,6 +4,16 @@ from libgen import search_books, get_download_url
 import datetime
 import random
 
+# Initialize session state
+if 'results' not in st.session_state:
+    st.session_state.results = []
+if 'page' not in st.session_state:
+    st.session_state.page = 1
+if 'current_query' not in st.session_state:
+    st.session_state.current_query = ""
+if 'show_donate' not in st.session_state:
+    st.session_state.show_donate = False
+
 st.set_page_config(
     page_title="Hidden Book Downloader",
     page_icon="📚",
@@ -36,9 +46,16 @@ quotes = [
     '> "Reading gives us someplace to go when we have to stay where we are." – Mason Cooley',
     '> "The reading of all good books is like conversation with the finest men of past centuries." – René Descartes',
     '> "Books are mirrors: you only see in them what you already have inside you." – Carlos Ruiz Zafón',
-    '> "I have always imagined that Paradise will be a kind of library." – Jorge Luis Borges'
+    '> "I have always imagined that Paradise will be a kind of library." – Jorge Luis Borges',
+    '> "Books are the quietest and most constant of friends; they are the most accessible and wisest of counselors, and the most patient of teachers." – Charles W. Eliot'
 ]
 st.sidebar.markdown(random.choice(quotes))
+
+if st.sidebar.button("Donate"):
+    st.session_state.show_donate = True
+
+if st.session_state.show_donate:
+    st.sidebar.image("aset/QRcode.jpg")
 
 st.markdown("""
 <style>
@@ -138,13 +155,6 @@ p, div, span {
 
 # Search functionality
 query = st.text_input("Enter book title or author here:")
-
-if 'results' not in st.session_state:
-    st.session_state.results = []
-if 'page' not in st.session_state:
-    st.session_state.page = 1
-if 'current_query' not in st.session_state:
-    st.session_state.current_query = ""
 
 def perform_search():
     placeholder = st.empty()
