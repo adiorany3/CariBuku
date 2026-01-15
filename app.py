@@ -153,6 +153,8 @@ p, div, span {
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown('<h1 style="text-align: center; color: #dda0dd;">🤖 Robot is ready to deep searching</h1>', unsafe_allow_html=True)
+
 # Search functionality
 query = st.text_input("Enter book title or author here:")
 
