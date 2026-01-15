@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from libgen import search_books, get_download_url
 import datetime
+import random
 
 st.set_page_config(
     page_title="Hidden Book Downloader",
@@ -24,6 +25,20 @@ This app allows you to search and download ebooks on Internet Archive.
 
 st.sidebar.markdown("---")
 st.sidebar.markdown('[Edit PDF](https://www.bentopdf.com/index.html) (opens in new tab)', unsafe_allow_html=False)
+
+quotes = [
+    '> "A reader lives a thousand lives before he dies. The man who never reads lives only one." – George R.R. Martin',
+    '> "The more that you read, the more things you will know. The more that you learn, the more places you’ll go." – Dr. Seuss',
+    '> "Books are a uniquely portable magic." – Stephen King',
+    '> "Reading is to the mind what exercise is to the body." – Joseph Addison',
+    '> "There is no friend as loyal as a book." – Ernest Hemingway',
+    '> "A book is a dream that you hold in your hand." – Neil Gaiman',
+    '> "Reading gives us someplace to go when we have to stay where we are." – Mason Cooley',
+    '> "The reading of all good books is like conversation with the finest men of past centuries." – René Descartes',
+    '> "Books are mirrors: you only see in them what you already have inside you." – Carlos Ruiz Zafón',
+    '> "I have always imagined that Paradise will be a kind of library." – Jorge Luis Borges'
+]
+st.sidebar.markdown(random.choice(quotes))
 
 st.markdown("""
 <style>
