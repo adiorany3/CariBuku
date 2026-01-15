@@ -105,6 +105,18 @@ p, div, span {
     background-color: rgba(220, 20, 60, 0.2);
     border: 1px solid #dc143c;
 }
+.robot-search {
+    animation: robot-search 2s infinite;
+    font-size: 1em;
+    color: #dda0dd;
+}
+@keyframes robot-search {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(5px); }
+    50% { transform: translateY(-5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -119,8 +131,10 @@ if 'current_query' not in st.session_state:
     st.session_state.current_query = ""
 
 def perform_search():
-    with st.spinner(f"Smart robot deep thinking, please wait, we will search at page {st.session_state.page}..."):
-        new_results = search_books(st.session_state.current_query, max_results=20, page=st.session_state.page)
+    placeholder = st.empty()
+    placeholder.markdown(f'<div style="display: flex; justify-content: center; align-items: center; height: 100px;"><div class="robot-search">🤖 Smart robot deep thinking, please wait, we will search at page {st.session_state.page}...</div></div>', unsafe_allow_html=True)
+    new_results = search_books(st.session_state.current_query, max_results=20, page=st.session_state.page)
+    placeholder.empty()
     if new_results:
         st.session_state.results.extend(new_results)
         st.success(f"Loaded {len(new_results)} more results (total: {len(st.session_state.results)})")
