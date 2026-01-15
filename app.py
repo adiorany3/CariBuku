@@ -167,7 +167,7 @@ with col3:
         perform_search()
 
 if st.session_state.results:
-    st.write(f"Total results: {len(st.session_state.results)}")
+    st.write(f"Robot founds: {len(st.session_state.results)}")
     for i, book in enumerate(st.session_state.results):
         with st.expander(f"{book['title']} by {book['author']} ({book['year']}) - {book['size']} {book['extension']}"):
             st.write(f"**Publisher:** {book['publisher']}")
