@@ -33,7 +33,7 @@ This app allows you to search and download ebooks on Internet Archive.
 - Use 'Load More' for additional results.
 
 **Disclaimer:** Ensure compliance with copyright laws.
-                If robot bussy, try again later.
+                If robot bussy, try again later, or use alternative search link.
 """)
 
 st.sidebar.markdown("---")
@@ -287,7 +287,6 @@ if st.session_state.results:
                 ("Randombook", f"https://randombook.org/book/{book['md5']}"),
                 ("Anna's Archive", f"https://en.annas-archive.org/md5/{book['md5']}"),
                 ("LibGen.pw", f"https://libgen.pw/book/{book['md5']}"),
-                ("BookSC", f"https://booksc.org/s/{book['md5']}"),
             ]
             for name, url in mirrors:
                 st.markdown(f'- <a href="{url}" target="_blank">{name}</a>', unsafe_allow_html=True)
