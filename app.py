@@ -3,6 +3,7 @@ import pandas as pd
 from libgen import search_books, get_download_url
 import datetime
 import random
+import streamlit.components.v1 as components
 
 # Initialize session state
 if 'results' not in st.session_state:
@@ -74,6 +75,8 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255,255,255,0.1);
     color: #ffffff;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 .stExpander {
     border: 1px solid rgba(138, 43, 226, 0.3);
@@ -90,15 +93,37 @@ body {
     padding: 14px 28px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
+    display: block;
+    width: 100%;
     font-size: 16px;
-    margin: 6px 3px;
+    margin: 6px 0;
     cursor: pointer;
     border-radius: 10px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(106, 90, 205, 0.3);
 }
 .stButton>button:hover {
+    background: linear-gradient(45deg, #483d8b, #6a5acd);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(106, 90, 205, 0.4);
+}
+.alternatif-btn {
+    background: linear-gradient(45deg, #6a5acd, #483d8b);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    margin: 6px 0;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(106, 90, 205, 0.3);
+}
+.alternatif-btn:hover {
     background: linear-gradient(45deg, #483d8b, #6a5acd);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(106, 90, 205, 0.4);
@@ -110,6 +135,7 @@ body {
     background-color: rgba(40, 40, 70, 0.8);
     color: #ffffff;
     font-size: 16px;
+    width: 100%;
 }
 .stTextInput input:focus {
     border-color: #6a5acd;
@@ -135,10 +161,23 @@ p, div, span {
 .stSuccess {
     background-color: rgba(34, 139, 34, 0.2);
     border: 1px solid #228b22;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
 }
 .stError {
     background-color: rgba(220, 20, 60, 0.2);
     border: 1px solid #dc143c;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+}
+.stWarning {
+    background-color: rgba(255, 165, 0, 0.2);
+    border: 1px solid #ffa500;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
 }
 .robot-search {
     animation: robot-search 2s infinite;
@@ -151,6 +190,17 @@ p, div, span {
     50% { transform: translateY(-5px); }
     75% { transform: translateX(-5px); }
     100% { transform: translateX(0); }
+}
+.results-container {
+    margin-top: 30px;
+}
+.footer {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px;
+    background-color: rgba(15, 15, 35, 0.5);
+    border-radius: 10px;
+    color: #dda0dd;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -186,6 +236,7 @@ def perform_search():
 
 col1, col2, col3 = st.columns([1, 1, 1])
 
+st.markdown('<div style="margin-top: 20px;">', unsafe_allow_html=True)
 with col1:
     if st.button("Search", key="search_btn"):
         if query:
@@ -206,11 +257,19 @@ with col2:
         st.success("History cleared. Display reset to initial state.")
 
 with col3:
-    if st.button("Load More", key="load_more_btn") and st.session_state.current_query:
-        st.session_state.page += 1
-        perform_search()
+    col3a, col3b = st.columns(2)
+    with col3a:
+        if st.button("Load More", key="load_more_btn") and st.session_state.current_query:
+            st.session_state.page += 1
+            perform_search()
+    with col3b:
+        components.html("""
+        <button class="alternatif-btn" onclick="window.open('https://carifile.streamlit.app/', '_blank')">Alternatif Search</button>
+        """)
+st.markdown('</div>', unsafe_allow_html=True)
 
 if st.session_state.results:
+    st.markdown('<div class="results-container">', unsafe_allow_html=True)
     st.write(f"Robot founds: {len(st.session_state.results)}")
     for i, book in enumerate(st.session_state.results):
         with st.expander(f"{book['title']} by {book['author']} ({book['year']}) - {book['size']} {book['extension']}"):
@@ -222,7 +281,8 @@ if st.session_state.results:
                 st.markdown(f'<a href="{download_url}" target="_blank">Download (opens in new tab)</a>', unsafe_allow_html=True)
             else:
                 st.error("Download URL not available")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("---")
 current_year = datetime.datetime.now().year
-st.markdown(f'<p style="text-align: center; color: #dda0dd;">Smart Robot - Developed by Galuh Adi Insani © {current_year}</p>', unsafe_allow_html=True)
+st.markdown(f'<div class="footer">Smart Robot - Developed by Galuh Adi Insani © {current_year}</div>', unsafe_allow_html=True)
