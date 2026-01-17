@@ -4,6 +4,7 @@ import time
 import re
 import concurrent.futures
 import threading
+import functools
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
@@ -187,6 +188,7 @@ def search_in_mirror(mirror, query, max_results, page):
                     print(f"HTTP fallback failed for {http_mirror}: {e2}")
     return None
 
+@functools.lru_cache(maxsize=128)
 def search_books(query, max_results=10, page=1):
     mirrors_to_use = ACTIVE_MIRRORS[:15] if ACTIVE_MIRRORS else MIRRORS[:15]  # Limit to 15 for efficiency
     with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
@@ -237,6 +239,7 @@ def get_download_from_mirror(mirror, md5):
                     print(f"HTTP fallback failed for {http_mirror}: {e2}")
     return None
 
+@functools.lru_cache(maxsize=256)
 def get_download_url(md5):
     mirrors_to_use = ACTIVE_MIRRORS[:15] if ACTIVE_MIRRORS else MIRRORS[:15]  # Limit to 15 for efficiency
     with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:

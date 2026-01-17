@@ -291,6 +291,14 @@ if st.session_state.results:
             ]
             for name, url in mirrors:
                 st.markdown(f'- <a href="{url}" target="_blank">{name}</a>', unsafe_allow_html=True)
+            
+            # Direct download link
+            with st.spinner("Getting direct download link..."):
+                direct_url = get_download_url(book['md5'])
+            if direct_url:
+                st.markdown(f'**Direct Download:** <a href="{direct_url}" target="_blank">Download Now</a>', unsafe_allow_html=True)
+            else:
+                st.write("Direct download not available")
     st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("---")
