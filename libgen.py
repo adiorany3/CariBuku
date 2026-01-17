@@ -267,3 +267,9 @@ def download_book(md5, filename=None):
         return True, filename
     except Exception as e:
         return False, str(e)
+
+def get_active_mirror_count():
+    return len(ACTIVE_MIRRORS)
+
+def get_total_mirror_count():
+    return len(MIRRORS)

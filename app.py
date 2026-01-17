@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from libgen import search_books, get_download_url
+from libgen import search_books, get_download_url, get_active_mirror_count, get_total_mirror_count
 import datetime
 import random
 import streamlit.components.v1 as components
@@ -38,6 +38,7 @@ This app allows you to search and download ebooks on Internet Archive.
 
 st.sidebar.markdown("---")
 st.sidebar.markdown('[Edit PDF](https://www.bentopdf.com/index.html) (opens in new tab)', unsafe_allow_html=False)
+st.sidebar.markdown('[Cek Server](https://open-slum.pages.dev/) (opens in new tab)', unsafe_allow_html=False)
 
 quotes = [
     '> "A reader lives a thousand lives before he dies. The man who never reads lives only one." – George R.R. Martin',
@@ -217,7 +218,7 @@ if query != st.session_state.input_query:
 # Constants for messages
 SEARCH_LOADING_MESSAGE = "🤖 Smart robot is deep searching, please wait... (Page {page})"
 RESULTS_SUCCESS_MESSAGE = "Loaded {count} more results (total: {total})"
-NO_RESULTS_MESSAGE = "No more results found."
+NO_RESULTS_MESSAGE = "No more results found, try different keywords, or maybe try the alternative search."
 SEARCH_ERROR_MESSAGE = "An error occurred while searching. Please try again."
 
 def perform_search():
@@ -294,4 +295,6 @@ if st.session_state.results:
 
 st.markdown("---")
 current_year = datetime.datetime.now().year
-st.markdown(f'<div class="footer">Smart Robot - Developed by Galuh Adi Insani © {current_year}</div>', unsafe_allow_html=True)
+mirror_count = get_active_mirror_count()
+total_mirrors = get_total_mirror_count()
+st.markdown(f'<div class="footer">Smart Robot - Developed by Galuh Adi Insani © {current_year} | Active Mirrors: {mirror_count} / {total_mirrors}</div>', unsafe_allow_html=True)
