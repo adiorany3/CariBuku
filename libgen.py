@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import time
 import re
+import concurrent.futures
+import threading
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
@@ -29,19 +31,41 @@ MIRRORS = [
     "https://libgen.tf/",
     "https://libgen.gg/",
     "https://libgen.hk/",
-    "https://libgen.hk/",
-    "https://libgen.hk/",
-    "https://libgen.hk/",
-    "https://libgen.hk/",
-    "https://libgen.hk/",
-    "https://libgen.hk/",
-    "https://libgen.hk/",
-    "https://libgen.hk/",
-    "https://libgen.hk/"
+    "https://libgen.onl/",
+    "https://libgen.tw/",
+    "https://libgen.cc/",
+    "https://libgen.nl/",
 ]
 
+ACTIVE_MIRRORS = []
+MIRROR_CHECK_INTERVAL = 300  # 5 minutes
+
+def check_mirror(mirror):
+    try:
+        response = requests.head(mirror, headers=HEADERS, timeout=5)
+        return mirror if response.status_code == 200 else None
+    except:
+        return None
+
+def update_active_mirrors():
+    global ACTIVE_MIRRORS
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        results = list(executor.map(check_mirror, MIRRORS))
+    ACTIVE_MIRRORS = [r for r in results if r]
+    print(f"Updated active mirrors: {len(ACTIVE_MIRRORS)} active out of {len(MIRRORS)}")
+
+def background_mirror_check():
+    while True:
+        update_active_mirrors()
+        time.sleep(MIRROR_CHECK_INTERVAL)
+
+# Start background thread for mirror checking
+mirror_thread = threading.Thread(target=background_mirror_check, daemon=True)
+mirror_thread.start()
+
 def search_books(query, max_results=10, page=1):
-    for mirror in MIRRORS:
+    mirrors_to_use = ACTIVE_MIRRORS if ACTIVE_MIRRORS else MIRRORS
+    for mirror in mirrors_to_use:
         try:
             url = f"{mirror}index.php?req={query}&lg_topic=libgen&open=0&view=simple&res=25&phrase=1&column=def&curtab=f&order=&ordermode=desc&filesuns=all&page={page}"
             response = requests.get(url, headers=HEADERS, timeout=10)
@@ -95,7 +119,8 @@ def search_books(query, max_results=10, page=1):
     return []
 
 def get_download_url(md5):
-    for mirror in MIRRORS:
+    mirrors_to_use = ACTIVE_MIRRORS if ACTIVE_MIRRORS else MIRRORS
+    for mirror in mirrors_to_use:
         try:
             url = f"{mirror}ads.php?md5={md5}"
             response = requests.get(url, headers=HEADERS, timeout=10)

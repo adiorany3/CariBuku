@@ -218,7 +218,7 @@ if query != st.session_state.input_query:
 SEARCH_LOADING_MESSAGE = "🤖 Smart robot is deep searching, please wait... (Page {page})"
 RESULTS_SUCCESS_MESSAGE = "Loaded {count} more results (total: {total})"
 NO_RESULTS_MESSAGE = "No more results found."
-SEARCH_ERROR_MESSAGE = "An error occurred while searching. Please try again."
+SEARCH_ERROR_MESSAGE = "An error occurred while seaPching. Please try again."
 
 def perform_search():
     try:
@@ -229,6 +229,9 @@ def perform_search():
             st.success(RESULTS_SUCCESS_MESSAGE.format(count=len(new_results), total=len(st.session_state.results)))
         else:
             st.warning(NO_RESULTS_MESSAGE)
+            components.html("""
+            <button class="alternatif-btn" onclick="window.open('https://carifile.streamlit.app/', '_blank')">Try Alternative Search</button>
+            """)
     except Exception as e:
         st.error(SEARCH_ERROR_MESSAGE)
         # Optional: log the error for debugging
@@ -276,11 +279,17 @@ if st.session_state.results:
             st.write(f"**Publisher:** {book['publisher']}")
             st.write(f"**Language:** {book['language']}")
             st.write(f"**Pages:** {book['pages']}")
-            download_url = get_download_url(book['md5'])
-            if download_url:
-                st.markdown(f'<a href="{download_url}" target="_blank">Download (opens in new tab)</a>', unsafe_allow_html=True)
-            else:
-                st.error("Download URL not available")
+            st.write("**Mirrors:**")
+            mirrors = [
+                ("LibGen", f"https://libgen.is/ads.php?md5={book['md5']}"),
+                ("LibGen.rs", f"https://libgen.rs/ads.php?md5={book['md5']}"),
+                ("Randombook", f"https://randombook.org/book/{book['md5']}"),
+                ("Anna's Archive", f"https://en.annas-archive.org/md5/{book['md5']}"),
+                ("LibGen.pw", f"https://libgen.pw/book/{book['md5']}"),
+                ("BookSC", f"https://booksc.org/s/{book['md5']}"),
+            ]
+            for name, url in mirrors:
+                st.markdown(f'- <a href="{url}" target="_blank">{name}</a>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("---")
