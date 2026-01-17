@@ -218,7 +218,7 @@ if query != st.session_state.input_query:
 SEARCH_LOADING_MESSAGE = "🤖 Smart robot is deep searching, please wait... (Page {page})"
 RESULTS_SUCCESS_MESSAGE = "Loaded {count} more results (total: {total})"
 NO_RESULTS_MESSAGE = "No more results found."
-SEARCH_ERROR_MESSAGE = "An error occurred while seaPching. Please try again."
+SEARCH_ERROR_MESSAGE = "An error occurred while searching. Please try again."
 
 def perform_search():
     try:
@@ -230,7 +230,7 @@ def perform_search():
         else:
             st.warning(NO_RESULTS_MESSAGE)
             components.html("""
-            <button class="alternatif-btn" onclick="window.open('https://carifile.streamlit.app/', '_blank')">Try Alternative Search</button>
+            <button class="alternatif-btn" onclick="window.open('https://carifile.streamlit.app/', '_blank')">Click Here to Try Alternative Search</button>
             """)
     except Exception as e:
         st.error(SEARCH_ERROR_MESSAGE)
