@@ -31,6 +31,9 @@ This app allows you to search and download ebooks on Internet Archive.
 - Enter a title or author to search. Robot will search for matching books.
 - Click on results to expand and download. Enjoy reading!
 - Use 'Load More' for additional results.
+- You can download, what you need, but please don't abuse this service’
+- If you like this app, consider donating to support development. Click 'Donate' button below to see QR code.
+
 
 **Disclaimer:** Ensure compliance with copyright laws.
                 If robot bussy, try again later, or use alternative search link.
@@ -56,7 +59,7 @@ quotes = [
 st.sidebar.markdown(random.choice(quotes))
 
 if st.sidebar.button("Donate"):
-    st.session_state.show_donate = True
+    st.session_state.show_donate = not st.session_state.show_donate
 
 if st.session_state.show_donate:
     st.sidebar.image("aset/QRcode.jpg")
