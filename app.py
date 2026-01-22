@@ -31,12 +31,12 @@ This app allows you to search and download ebooks on Internet Archive.
 - Enter a title or author to search. Robot will search for matching books.
 - Click on results to expand and download. Enjoy reading!
 - Use 'Load More' for additional results.
-- You can download, what you need, but please don't abuse this service’. Buy books to support authors.
+- You can download what you need, but please don't abuse this service. Buy books to support authors.
 - If you like this app, consider donating to support development. Click 'Donate' button below to see QR code.
 
 
 **Disclaimer:** Ensure compliance with copyright laws.
-                If robot bussy, try again later, or use alternative search link.
+                If robot busy, try again later, or use alternative search link.
 """)
 
 st.sidebar.markdown("---")
@@ -66,320 +66,49 @@ if st.session_state.show_donate:
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
 body {
-    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f0f23 75%, #1a1a2e 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-    font-family: 'Inter', sans-serif;
-    color: #ffffff;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-}
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    background-color: #f0f2f6;
+    font-family: Arial, sans-serif;
 }
 
 .stApp {
-    background: rgba(26, 26, 46, 0.95);
-    border-radius: 20px;
-    padding: 40px;
-    margin: 20px auto;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: #ffffff;
-    max-width: 1400px;
-    position: relative;
-    overflow: hidden;
-}
-
-.stApp::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7, #dda0dd);
-    background-size: 400% 100%;
-    animation: rainbowBorder 8s linear infinite;
-}
-
-@keyframes rainbowBorder {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 400% 0%; }
-}
-
-.stExpander {
-    border: 2px solid rgba(138, 43, 226, 0.4);
-    border-radius: 15px;
-    margin-bottom: 25px;
-    background: linear-gradient(135deg, rgba(30, 30, 60, 0.9) 0%, rgba(40, 40, 80, 0.8) 100%);
-    color: #ffffff;
-    box-shadow: 0 8px 25px rgba(138, 43, 226, 0.15);
-    transition: all 0.3s ease;
-    overflow: hidden;
-}
-
-.stExpander:hover {
-    border-color: rgba(138, 43, 226, 0.6);
-    box-shadow: 0 12px 35px rgba(138, 43, 226, 0.25);
-    transform: translateY(-2px);
-}
-
-.stButton>button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: 16px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    width: 100%;
-    font-size: 16px;
-    margin: 8px 0;
-    cursor: pointer;
-    border-radius: 12px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    position: relative;
-    overflow: hidden;
-}
-
-.stButton>button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s;
-}
-
-.stButton>button:hover::before {
-    left: 100%;
-}
-
-.stButton>button:hover {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
-}
-
-.alternatif-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: 16px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    width: 100%;
-    font-size: 16px;
-    margin: 8px 0;
-    cursor: pointer;
-    border-radius: 12px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    position: relative;
-    overflow: hidden;
-}
-
-.alternatif-btn:hover {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
-}
-
-.stTextInput input {
-    border-radius: 12px;
-    border: 2px solid rgba(138, 43, 226, 0.4);
-    padding: 16px;
-    background: linear-gradient(135deg, rgba(40, 40, 70, 0.9) 0%, rgba(50, 50, 90, 0.8) 100%);
-    color: #ffffff;
-    font-size: 16px;
-    width: 100%;
-    transition: all 0.3s ease;
-    box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.stTextInput input:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 20px rgba(102, 126, 234, 0.5), inset 0 2px 10px rgba(0,0,0,0.1);
-    transform: scale(1.02);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 h1 {
-    color: #ffffff;
+    color: #333;
     text-align: center;
-    font-size: 3.5em;
-    font-weight: 700;
-    text-shadow: 0 0 30px rgba(221, 160, 221, 0.8), 0 0 60px rgba(221, 160, 221, 0.4);
-    margin-bottom: 40px;
-    background: linear-gradient(45deg, #dda0dd, #98d8c8, #f7dc6f, #bb8fce);
-    background-size: 400% 400%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: textGradient 4s ease infinite;
-    letter-spacing: -1px;
 }
 
-@keyframes textGradient {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+.stButton>button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.sidebar .sidebar-content {
-    background: linear-gradient(135deg, rgba(15, 15, 35, 0.95) 0%, rgba(25, 25, 55, 0.9) 100%);
-    color: #ffffff;
-    border-radius: 15px;
-    padding: 25px;
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.1);
+.stTextInput input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
-p, div, span {
-    color: #ffffff;
-}
-
-.stSuccess {
-    background: linear-gradient(135deg, rgba(34, 139, 34, 0.3) 0%, rgba(50, 205, 50, 0.2) 100%);
-    border: 2px solid #228b22;
-    border-radius: 12px;
-    padding: 15px;
-    margin: 15px 0;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(34, 139, 34, 0.2);
-}
-
-.stError {
-    background: linear-gradient(135deg, rgba(220, 20, 60, 0.3) 0%, rgba(255, 69, 0, 0.2) 100%);
-    border: 2px solid #dc143c;
-    border-radius: 12px;
-    padding: 15px;
-    margin: 15px 0;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(220, 20, 60, 0.2);
-}
-
-.stWarning {
-    background: linear-gradient(135deg, rgba(255, 165, 0, 0.3) 0%, rgba(255, 215, 0, 0.2) 100%);
-    border: 2px solid #ffa500;
-    border-radius: 12px;
-    padding: 15px;
-    margin: 15px 0;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(255, 165, 0, 0.2);
-}
-
-.robot-search {
-    animation: robot-search 3s ease-in-out infinite;
-    font-size: 1.2em;
-    color: #dda0dd;
-    font-weight: 600;
-}
-
-@keyframes robot-search {
-    0%, 100% { transform: translateX(0) rotate(0deg); opacity: 1; }
-    25% { transform: translateX(10px) rotate(2deg); opacity: 0.8; }
-    50% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-    75% { transform: translateX(-10px) rotate(-2deg); opacity: 0.8; }
-}
-
-.results-container {
-    margin-top: 40px;
-    padding: 30px;
-    background: rgba(20, 20, 50, 0.8);
-    border-radius: 20px;
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-.footer {
-    text-align: center;
-    margin-top: 60px;
-    padding: 25px;
-    background: linear-gradient(135deg, rgba(15, 15, 35, 0.8) 0%, rgba(25, 25, 55, 0.7) 100%);
-    border-radius: 15px;
-    color: #dda0dd;
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-}
-
-.footer h3 {
-    margin: 0 0 10px 0;
-    font-size: 1.2em;
-    font-weight: 600;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .stApp {
-        padding: 20px;
-        margin: 10px;
-        border-radius: 15px;
-    }
-    
-    h1 {
-        font-size: 2.5em;
-    }
-    
-    .stButton>button, .alternatif-btn {
-        padding: 12px 24px;
-        font-size: 14px;
-    }
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(26, 26, 46, 0.5);
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #764ba2, #667eea);
-}
-
-/* Loading animation */
-.stSpinner > div {
-    border-color: #667eea transparent transparent transparent !important;
-}
-
-/* Progress bar styling */
-.stProgress > div > div {
-    background: linear-gradient(90deg, #667eea, #764ba2) !important;
+.stExpander {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<h1 style="text-align: center; color: #dda0dd;">🤖 Robot is ready to deep searching</h1>', unsafe_allow_html=True)
+st.title("🤖 Robot is ready to deep searching")
 
 # Search functionality
 query = st.text_input("Enter book title or author here:", value=st.session_state.input_query, key="query_input")
-
-# Update session state when user types
-if query != st.session_state.input_query:
-    st.session_state.input_query = query
 
 # Constants for messages
 SEARCH_LOADING_MESSAGE = "🤖 Smart robot is deep searching, please wait... (Page {page})"
@@ -396,17 +125,15 @@ def perform_search():
             st.success(RESULTS_SUCCESS_MESSAGE.format(count=len(new_results), total=len(st.session_state.results)))
         else:
             st.warning(NO_RESULTS_MESSAGE)
-            components.html("""
-            <button class="alternatif-btn" onclick="window.open('https://carifile.streamlit.app/', '_blank')">Click Here to Try Alternative Search</button>
-            """)
+            st.markdown('<a href="https://carifile.streamlit.app/" target="_blank" style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 12px; text-decoration: none; font-weight: 500;">Click Here to Try Alternative Search</a>', unsafe_allow_html=True)
     except Exception as e:
         st.error(SEARCH_ERROR_MESSAGE)
         # Optional: log the error for debugging
         print(f"Search error: {e}")
 
-col1, col2, col3 = st.columns([1, 1, 1])
-
 st.markdown('<div style="margin-top: 20px;">', unsafe_allow_html=True)
+col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
+
 with col1:
     if st.button("Search", key="search_btn"):
         if query:
@@ -427,20 +154,17 @@ with col2:
         st.success("History cleared. Display reset to initial state.")
 
 with col3:
-    col3a, col3b = st.columns(2)
-    with col3a:
-        if st.button("Load More", key="load_more_btn") and st.session_state.current_query:
-            st.session_state.page += 1
-            perform_search()
-    with col3b:
-        components.html("""
-        <button class="alternatif-btn" onclick="window.open('https://carifile.streamlit.app/', '_blank')">Alternatif Search</button>
-        """)
+    if st.button("Load More", key="load_more_btn") and st.session_state.current_query:
+        st.session_state.page += 1
+        perform_search()
+
+with col4:
+    st.markdown('<a href="https://carifile.streamlit.app/" target="_blank" class="alternatif-btn" style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 12px; text-decoration: none; font-weight: 500;">Alternatif Search</a>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 if st.session_state.results:
     st.markdown('<div class="results-container">', unsafe_allow_html=True)
-    st.write(f"Robot founds: {len(st.session_state.results)}")
+    st.write(f"Robot found: {len(st.session_state.results)}")
     for i, book in enumerate(st.session_state.results):
         with st.expander(f"{book['title']} by {book['author']} ({book['year']}) - {book['size']} {book['extension']}"):
             st.write(f"**Publisher:** {book['publisher']}")

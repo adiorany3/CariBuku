@@ -55,6 +55,7 @@ MIRRORS = [
 
 ACTIVE_MIRRORS = []
 MIRROR_CHECK_INTERVAL = 300  # 5 minutes
+mirror_thread_started = False
 
 def check_mirror(mirror):
     for attempt in range(3):  # Retry up to 3 times
@@ -84,8 +85,10 @@ def background_mirror_check():
         time.sleep(MIRROR_CHECK_INTERVAL)
 
 # Start background thread for mirror checking
-mirror_thread = threading.Thread(target=background_mirror_check, daemon=True)
-mirror_thread.start()
+if not mirror_thread_started:
+    mirror_thread = threading.Thread(target=background_mirror_check, daemon=True)
+    mirror_thread.start()
+    mirror_thread_started = True
 
 def search_in_mirror(mirror, query, max_results, page):
     for attempt in range(3):  # Retry up to 3 times
