@@ -24,20 +24,21 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.sidebar.title("📖 About this app")
-st.sidebar.info("""
-This app allows you to search and download ebooks on Internet Archive.
 
-- Enter a title or author to search. Robot will search for matching books.
-- Click on results to expand and download. Enjoy reading!
-- Use 'Load More' for additional results.
-- You can download what you need, but please don't abuse this service. Buy books to support authors.
-- If you like this app, consider donating to support development. Click **'Donate'** button below to see QR code.
-
-
-**Disclaimer:** Ensure compliance with copyright laws.
-                If robot busy, try again later, or use alternative search link.
-""")
+# About section at the very top
+st.sidebar.markdown("""
+<div style='margin-bottom: 0.5em;'>
+<h2 style='margin-bottom:0.2em;font-size:1.3em;'>📖 About</h2>
+<div style='font-size:1em;'>
+🔍 Search & download ebooks instantly.<br>
+1. Masukkan judul/penulis, klik <b>Search</b>.<br>
+2. Klik hasil untuk download.<br>
+3. Gunakan <b>Load More</b> untuk hasil tambahan.<br>
+<br>💡 Dukung penulis dengan membeli buku asli.<br>
+<span style='color:#e17055;'>⚠️ Disclaimer: Patuhi hukum hak cipta. Jika robot sibuk, coba lagi atau gunakan alternatif.</span>
+</div>
+</div>
+""", unsafe_allow_html=True)
 
 st.sidebar.markdown("---")
 st.sidebar.markdown('[Edit PDF](https://www.bentopdf.com/index.html) (opens in new tab)', unsafe_allow_html=False)
