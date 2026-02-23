@@ -193,14 +193,10 @@ def search_in_mirror(mirror, query, max_results, page):
 
 @functools.lru_cache(maxsize=128)
 def search_books(query, max_results=10, page=1):
-    mirrors_to_use = ACTIVE_MIRRORS[:15] if ACTIVE_MIRRORS else MIRRORS[:15]  # Limit to 15 for efficiency
-    with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
-        futures = [executor.submit(search_in_mirror, mirror, query, max_results, page) for mirror in mirrors_to_use]
-        for future in concurrent.futures.as_completed(futures):
-            result = future.result()
-            if result:
-                return result
-    return []
+    # Use only the fastest available mirror for faster and simpler search
+    fastest_mirror = ACTIVE_MIRRORS[0] if ACTIVE_MIRRORS else MIRRORS[0]
+    result = search_in_mirror(fastest_mirror, query, max_results, page)
+    return result if result else []
 
 def get_download_from_mirror(mirror, md5):
     for attempt in range(3):  # Retry up to 3 times

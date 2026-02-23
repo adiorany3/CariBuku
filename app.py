@@ -67,45 +67,95 @@ if st.session_state.show_donate:
 st.markdown("""
 <style>
 body {
-    background-color: #f0f2f6;
-    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #f0f2f6 0%, #e3e9f7 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
 }
-
 .stApp {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 20px;
 }
-
-h1 {
-    color: #333;
+h1, .main-title {
+    color: #4a3aff;
     text-align: center;
+    font-weight: 700;
+    margin-bottom: 0.5em;
+    letter-spacing: 1px;
 }
-
 .stButton>button {
-    background-color: #4CAF50;
+    background: linear-gradient(90deg, #4a3aff 0%, #00c6fb 100%);
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(76, 58, 255, 0.08);
+    transition: background 0.2s;
 }
-
+.stButton>button:hover {
+    background: linear-gradient(90deg, #00c6fb 0%, #4a3aff 100%);
+}
 .stTextInput input {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1.5px solid #4a3aff33;
+    font-size: 1.1em;
 }
-
 .stExpander {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 10px;
+    border: 1.5px solid #4a3aff33;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(76, 58, 255, 0.04);
+}
+.results-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    justify-content: center;
+    margin-top: 18px;
+}
+.book-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(76, 58, 255, 0.07);
+    padding: 22px 28px 18px 28px;
+    min-width: 320px;
+    max-width: 370px;
+    flex: 1 1 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border: 1.5px solid #4a3aff22;
+}
+.book-title {
+    font-size: 1.18em;
+    font-weight: 700;
+    color: #4a3aff;
+    margin-bottom: 2px;
+}
+.book-meta {
+    font-size: 0.98em;
+    color: #444;
+    margin-bottom: 2px;
+}
+.book-download {
+    margin-top: 10px;
+    font-weight: 600;
+    color: #00b894;
+}
+.footer {
+    margin-top: 32px;
+    color: #888;
+    font-size: 0.98em;
+    text-align: center;
 }
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🤖 Robot is ready to deep searching")
+
+st.markdown('<div class="main-title"><span style="font-size:2.2em;">🤖 Cari Buku</span><br><span style="font-size:1.1em;font-weight:400;color:#555;">Search & Download Free Ebooks Instantly</span></div>', unsafe_allow_html=True)
 
 # Search functionality
 query = st.text_input("Enter book title or author here:", value=st.session_state.input_query, key="query_input")
@@ -119,7 +169,7 @@ SEARCH_ERROR_MESSAGE = "An error occurred while searching. Please try again."
 def perform_search():
     try:
         with st.spinner(SEARCH_LOADING_MESSAGE.format(page=st.session_state.page)):
-            new_results = search_books(st.session_state.current_query, max_results=20, page=st.session_state.page)
+            new_results = search_books(st.session_state.current_query, max_results=10, page=st.session_state.page)
         if new_results:
             st.session_state.results.extend(new_results)
             st.success(RESULTS_SUCCESS_MESSAGE.format(count=len(new_results), total=len(st.session_state.results)))
@@ -164,21 +214,21 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 if st.session_state.results:
     st.markdown('<div class="results-container">', unsafe_allow_html=True)
-    st.write(f"Robot found: {len(st.session_state.results)}")
     for i, book in enumerate(st.session_state.results):
-        with st.expander(f"{book['title']} by {book['author']} ({book['year']}) - {book['size']} {book['extension']}"):
-            st.write(f"**Publisher:** {book['publisher']}")
-            st.write(f"**Language:** {book['language']}")
-            st.write(f"**Pages:** {book['pages']}")
-                # ...existing code...
-            
-            # Direct download link
-            with st.spinner("Getting direct download link..."):
+        with st.container():
+            st.markdown(f'''
+            <div class="book-card">
+                <div class="book-title">📚 {book['title']}</div>
+                <div class="book-meta"><b>Author:</b> {book['author']} &nbsp;|&nbsp; <b>Year:</b> {book['year']} &nbsp;|&nbsp; <b>Lang:</b> {book['language']}</div>
+                <div class="book-meta"><b>Publisher:</b> {book['publisher']} &nbsp;|&nbsp; <b>Pages:</b> {book['pages']} &nbsp;|&nbsp; <b>Size:</b> {book['size']} {book['extension']}</div>
+            ''', unsafe_allow_html=True)
+            with st.spinner("Getting direct download link... Please wait..."):
                 direct_url = get_download_url(book['md5'])
             if direct_url:
-                st.markdown(f'**Direct Download:** <a href="{direct_url}" target="_blank">Download Now</a>', unsafe_allow_html=True)
+                st.markdown(f'<div class="book-download">🔗 <a href="{direct_url}" target="_blank">Download Now</a></div>', unsafe_allow_html=True)
             else:
-                st.write("Direct download not available")
+                st.markdown('<div class="book-download" style="color:#e17055;">Direct download not available</div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("---")
