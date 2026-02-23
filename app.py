@@ -170,16 +170,7 @@ if st.session_state.results:
             st.write(f"**Publisher:** {book['publisher']}")
             st.write(f"**Language:** {book['language']}")
             st.write(f"**Pages:** {book['pages']}")
-            st.write("**Mirrors:**")
-            mirrors = [
-                ("LibGen", f"https://libgen.is/ads.php?md5={book['md5']}"),
-                ("LibGen.rs", f"https://libgen.rs/ads.php?md5={book['md5']}"),
-                ("Randombook", f"https://randombook.org/book/{book['md5']}"),
-                ("Anna's Archive", f"https://en.annas-archive.org/md5/{book['md5']}"),
-                ("LibGen.pw", f"https://libgen.pw/book/{book['md5']}"),
-            ]
-            for name, url in mirrors:
-                st.markdown(f'- <a href="{url}" target="_blank">{name}</a>', unsafe_allow_html=True)
+                # ...existing code...
             
             # Direct download link
             with st.spinner("Getting direct download link..."):
