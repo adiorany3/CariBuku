@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from libgen import search_books, get_download_url, get_active_mirror_count, get_total_mirror_count
+from libgen import search_books, get_active_mirror_count, get_total_mirror_count, get_download_url
 import datetime
 import random
 import streamlit.components.v1 as components
@@ -179,7 +179,6 @@ def perform_search():
             st.markdown('<a href="https://carifile.streamlit.app/" target="_blank" style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 12px; text-decoration: none; font-weight: 500;">Click Here to Try Alternative Search</a>', unsafe_allow_html=True)
     except Exception as e:
         st.error(SEARCH_ERROR_MESSAGE)
-        # Optional: log the error for debugging
         print(f"Search error: {e}")
 
 st.markdown('<div style="margin-top: 20px;">', unsafe_allow_html=True)
@@ -219,12 +218,12 @@ if st.session_state.results:
         with st.container():
             st.markdown(f'''
             <div class="book-card">
-                <div class="book-title">📚 {book['title']}</div>
-                <div class="book-meta"><b>Author:</b> {book['author']} &nbsp;|&nbsp; <b>Year:</b> {book['year']} &nbsp;|&nbsp; <b>Lang:</b> {book['language']}</div>
-                <div class="book-meta"><b>Publisher:</b> {book['publisher']} &nbsp;|&nbsp; <b>Pages:</b> {book['pages']} &nbsp;|&nbsp; <b>Size:</b> {book['size']} {book['extension']}</div>
+                <div class="book-title">📚 {book.get('title', '-') }</div>
+                <div class="book-meta"><b>Author:</b> {book.get('author', '-') } &nbsp;|&nbsp; <b>Year:</b> {book.get('year', '-') } &nbsp;|&nbsp; <b>Lang:</b> {book.get('language', '-') }</div>
+                <div class="book-meta"><b>Publisher:</b> {book.get('publisher', '-') } &nbsp;|&nbsp; <b>Pages:</b> {book.get('pages', '-') } &nbsp;|&nbsp; <b>Size:</b> {book.get('size', '-') } {book.get('extension', '-') }</div>
             ''', unsafe_allow_html=True)
             with st.spinner("Getting direct download link... Please wait..."):
-                direct_url = get_download_url(book['md5'])
+                direct_url = get_download_url(book['md5']) if 'md5' in book else None
             if direct_url:
                 st.markdown(f'<div class="book-download">🔗 <a href="{direct_url}" target="_blank">Download Now</a></div>', unsafe_allow_html=True)
             else:
