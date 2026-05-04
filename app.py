@@ -170,10 +170,13 @@ SEARCH_ERROR_MESSAGE = "An error occurred while searching. Please try again."
 def perform_search():
     try:
         with st.spinner(SEARCH_LOADING_MESSAGE.format(page=st.session_state.page)):
-            new_results = search_books(st.session_state.current_query, max_results=10, page=st.session_state.page)
-        if new_results:
-            st.session_state.results.extend(new_results)
-            st.success(RESULTS_SUCCESS_MESSAGE.format(count=len(new_results), total=len(st.session_state.results)))
+            new_results = search_books(st.session_state.current_query, max_results=25, page=st.session_state.page)
+        # Hindari duplikasi berdasarkan md5
+        existing_md5 = set(book.get('md5') for book in st.session_state.results)
+        filtered_results = [book for book in new_results if book.get('md5') not in existing_md5]
+        if filtered_results:
+            st.session_state.results.extend(filtered_results)
+            st.success(RESULTS_SUCCESS_MESSAGE.format(count=len(filtered_results), total=len(st.session_state.results)))
         else:
             st.warning(NO_RESULTS_MESSAGE)
             st.markdown('<a href="https://carifile.streamlit.app/" target="_blank" style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 12px; text-decoration: none; font-weight: 500;">Click Here to Try Alternative Search</a>', unsafe_allow_html=True)
